@@ -1,0 +1,4 @@
+{
+    "authorization_endpoint": "https://example.com/authorize",
+    "jwks_uri": "https://example.com/.well-known/jwks.json"
+}

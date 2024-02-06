@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "outDir": "./build",
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "target": "ESNext",
+        "types": ["node", "jest"],
+        "lib": ["ES2020.Promise"],
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "strict": true,
+        "noEmit": true,
+        "module": "ES2015",
+        "moduleResolution": "node",
+        "paths": {
+            "src/*": ["src/*"],
+            "test/*": ["test/*"]
+        }
+    },
+    "include": ["src", "dev", "test"],
+    "ts-node": {
+        "compilerOptions": {
+            "module": "CommonJS"
+        }
+    }
+}
