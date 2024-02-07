@@ -16,7 +16,7 @@ jobs:
       AUTH0_OIDC_CONFIG_URL: ${{ secrets.AUTH0_OIDC_CONFIG_URL }}
       OIDC_CLIENT_ID: ${{ secrets.OIDC_CLIENT_ID }}
       OIDC_CLIENT_SECRET: ${{ secrets.OIDC_CLIENT_SECRET }}
-      OIDC_REDIRECT_URL: ${{ secrets.OIDC_REDIRECT_URI }}
+      OIDC_REDIRECT_URI: ${{ secrets.OIDC_REDIRECT_URI }}
       OIDC_GRANT_TYPE: ${{ secrets.OIDC_GRANT_TYPE }}
       OIDC_RESPONSE_TYPE: ${{ secrets.OIDC_RESPONSE_TYPE }}
       OIDC_SCOPES: ${{ secrets.OIDC_SCOPES }}
