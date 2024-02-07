@@ -1,0 +1,80 @@
+name: "Integration"
+on:
+  - pull_request
+  - push
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "npm"
+      - name: Install Modules
+        run: npm install
+      - name: Run ESLint
+        run: npm run lint:check
+      - name: Run Prettier
+        run: npm run prettify:check
+      - name: Run Typescript Compiler
+        run: npm run types:check
+  build:
+    runs-on: ubuntu-latest
+    env:
+      COOKIE_NAME: ${{ secrets.COOKIE_NAME }}
+      NONCE_COOKIE_NAME: ${{ secrets.NONCE_COOKIE_NAME }}
+      AWS_AUTHORIZE_METHOD_NAME: ${{ secrets.AWS_AUTHORIZE_METHOD_NAME }}
+      AWS_RUNTIME_REGION: ${{ secrets.AWS_RUNTIME_REGION }}
+      AUTH0_OIDC_CONFIG_URL: ${{ secrets.AUTH0_OIDC_CONFIG_URL }}
+      OIDC_CLIENT_ID: ${{ secrets.OIDC_CLIENT_ID }}
+      OIDC_CLIENT_SECRET: ${{ secrets.OIDC_CLIENT_SECRET }}
+      OIDC_REDIRECT_URL: ${{ secrets.OIDC_REDIRECT_URI }}
+      OIDC_GRANT_TYPE: ${{ secrets.OIDC_GRANT_TYPE }}
+      OIDC_RESPONSE_TYPE: ${{ secrets.OIDC_RESPONSE_TYPE }}
+      OIDC_SCOPES: ${{ secrets.OIDC_SCOPES }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "npm"
+      - name: Install Modules
+        run: npm install
+      - name: Build Package
+        run: npm run build
+#   test:
+#     runs-on: ubuntu-latest
+#     env:
+#       SECRETS_MANAGER_SECRET: ${{ secrets.TEST_SECRETS_MANAGER_SECRET }}
+#       OAUTH_ISSUER: ${{ secrets.TEST_OAUTH_ISSUER }}
+#       OAUTH_AUDIENCE: ${{ secrets.TEST_OAUTH_AUDIENCE }}
+#       OAUTH_REQUIRED_CLAIM: ${{ secrets.TEST_OAUTH_REQUIRED_CLAIM }}
+#       OIDC_URL: ${{ secrets.TEST_OIDC_URL }}
+#       OIDC_CLIENT_ID: ${{ secrets.TEST_OIDC_CLIENT_ID }}
+#       OIDC_CLIENT_SECRET: ${{ secrets.TEST_OIDC_CLIENT_SECRET }}
+#       OIDC_GRANT_TYPE: ${{ secrets.TEST_OIDC_GRANT_TYPE }}
+#       TESTING_PRIVATE_KEY: ${{ secrets.TEST_PRIVATE_KEY }}
+#       TESTING_PUBLIC_KEY: ${{ secrets.TEST_PUBLIC_KEY }}
+#       TESTING_INVALID_PRIVATE_KEY: ${{ secrets.TEST_INVALID_PRIVATE_KEY }}
+#       SECRETS_MANAGER_API_VERSION: ${{ secrets.SECRETS_MANAGER_API_VERSION }}
+#       SECRETS_MANAGER_REGION: ${{ secrets.SECRETS_MANAGER_REGION }}
+#       COOKIE_ALGORITHM: ${{ secrets.COOKIE_ALGORITHM }}
+#       COOKIE_NAME: ${{ secrets.COOKIE_NAME }}
+#       OAUTH_ALGORITHM: ${{ secrets.OAUTH_ALGORITHM }}
+#     steps:
+#       - name: Checkout Repository
+#         uses: actions/checkout@v4
+#       - name: Setup Node
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: "20.x"
+#           cache: "npm"
+#       - name: Install Modules
+#         run: npm install
+#       - name: Run Tests
+#         run: npm run test

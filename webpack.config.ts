@@ -36,7 +36,6 @@ const config: Configuration = {
       "COOKIE_NAME",
       "NONCE_COOKIE_NAME",
       "AWS_AUTHORIZE_METHOD_NAME",
-      "AWS_RUNTIME_LAMBDA_VERSION",
       "AWS_RUNTIME_REGION",
       "AUTH0_OIDC_CONFIG_URL",
       "OIDC_CLIENT_ID",

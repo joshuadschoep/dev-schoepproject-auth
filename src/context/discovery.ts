@@ -1,6 +1,12 @@
 import axios from "axios";
 
-export var discoveryDocument: any;
+export interface DiscoveryDocument {
+  authorization_endpoint: string;
+  jwks_uri: string;
+  token_endpoint: string;
+}
+
+export var discoveryDocument: DiscoveryDocument;
 
 // setDiscoveryDocument sets the discoveryDocument object if it wasn't already set.
 export const setDiscoveryDocument = async () => {

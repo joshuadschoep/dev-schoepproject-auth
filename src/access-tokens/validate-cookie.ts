@@ -1,6 +1,7 @@
-import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
-import { UnauthorizedError } from "src/exceptions";
-import log from "src/log";
+import { InvokeCommand } from "@aws-sdk/client-lambda";
+import { lambdaClient } from "../context";
+import { UnauthorizedError } from "../exceptions";
+import log from "../log";
 
 export interface AuthorizationResult {
   Authorized?: boolean;
@@ -12,13 +13,9 @@ export interface AuthorizationResult {
 }
 
 export const validateCookie = async (signedCookie: string) => {
-  const client = new LambdaClient({
-    apiVersion: process.env.AWS_RUNTIME_LAMBDA_VERSION,
-    region: process.env.AWS_RUNTIME_REGION,
-  });
   const result: AuthorizationResult = JSON.parse(
     (
-      await client.send(
+      await lambdaClient.send(
         new InvokeCommand({
           FunctionName: process.env.AWS_AUTHORIZE_METHOD_NAME,
           Payload: JSON.stringify({
@@ -29,7 +26,7 @@ export const validateCookie = async (signedCookie: string) => {
     ).Payload?.toString() ?? ""
   );
 
-  if (result.Authorized) {
+  if (result.Authorized === true) {
     return true;
   } else {
     log("warning", "Error authorizing cookie:", result.Error?.Message);

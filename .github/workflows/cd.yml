@@ -1,0 +1,85 @@
+name: "Deployment"
+on:
+  workflow_run:
+    workflows: ["Integration"]
+    types:
+      - completed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      COOKIE_NAME: ${{ secrets.COOKIE_NAME }}
+      NONCE_COOKIE_NAME: ${{ secrets.NONCE_COOKIE_NAME }}
+      AWS_AUTHORIZE_METHOD_NAME: ${{ secrets.AWS_AUTHORIZE_METHOD_NAME }}
+      AWS_RUNTIME_REGION: ${{ secrets.AWS_RUNTIME_REGION }}
+      AUTH0_OIDC_CONFIG_URL: ${{ secrets.AUTH0_OIDC_CONFIG_URL }}
+      OIDC_CLIENT_ID: ${{ secrets.OIDC_CLIENT_ID }}
+      OIDC_CLIENT_SECRET: ${{ secrets.OIDC_CLIENT_SECRET }}
+      OIDC_REDIRECT_URL: ${{ secrets.OIDC_REDIRECT_URI }}
+      OIDC_GRANT_TYPE: ${{ secrets.OIDC_GRANT_TYPE }}
+      OIDC_RESPONSE_TYPE: ${{ secrets.OIDC_RESPONSE_TYPE }}
+      OIDC_SCOPES: ${{ secrets.OIDC_SCOPES }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "npm"
+      - name: Install Modules
+        run: npm install
+      - name: Build Package
+        run: npm run build
+      - name: Archive prod artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: build
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    env:
+      AWS_FUNCTION_ARN: ${{ secrets.AWS_FUNCTION_ARN }}
+      BUILD_ZIP_FILE: ${{ secrets.BUILD_ZIP_FILE }}
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Configure Deployment Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_LAMBDA_ROLE }}
+          role-session-name: ${{ secrets.AWS_SESSION_NAME }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Download Build
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+          path: build
+      - name: Upload to Lambda
+        run: bash ../.github/scripts/upload-code.sh
+        working-directory: build
+  deploy-edge:
+    runs-on: ubuntu-latest
+    needs: deploy
+    env:
+      AWS_CLOUDFRONT_DIST: ${{ secrets.AWS_CLOUDFRONT_DIST }}
+      AWS_FUNCTION_ARN: ${{ secrets.AWS_FUNCTION_ARN }}
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Configure Deployment Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_EDGE_ROLE }}
+          role-session-name: ${{ secrets.AWS_SESSION_NAME }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Deploy to edge
+        run: bash ./.github/scripts/deploy-to-edge.sh

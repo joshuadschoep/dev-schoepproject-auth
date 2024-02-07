@@ -1,15 +1,19 @@
 import type { CloudFrontRequest, CloudFrontResponse } from "aws-lambda";
 import { handleOidcCallback } from "../idToken/handle-oidc-callback";
-import { authenticate } from "../accessToken/authenticate";
+import { authenticateCookie } from "../access-tokens/authenticate";
 import log from "../log";
+import { isAuthenticatedRequest, isOidcRedirectRequest } from "./const";
+import { OIDC_REDIRECT } from "../responses";
 
 export const route = async (
   request: CloudFrontRequest
 ): Promise<CloudFrontResponse | CloudFrontRequest> => {
   log("info", `ROUTING REQUEST: ${request.uri}`, request);
-  if (request.uri.startsWith(process.env.OIDC_REDIRECT_URI ?? "")) {
+  if (isOidcRedirectRequest(request)) {
     return await handleOidcCallback(request);
+  } else if (isAuthenticatedRequest(request)) {
+    return await authenticateCookie(request);
   } else {
-    return await authenticate(request);
+    return OIDC_REDIRECT(request.uri);
   }
 };

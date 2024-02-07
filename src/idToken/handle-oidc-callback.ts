@@ -10,7 +10,7 @@ import Cookie from "cookie";
 import { createHmac } from "crypto";
 import { SUCCESS_REDIRECT } from "../responses";
 import log from "../log";
-import { getCookie } from "src/accessToken/getCookie";
+import { getCookie } from "./get-cookie";
 
 export const handleOidcCallback = async (
   request: CloudFrontRequest
@@ -24,15 +24,17 @@ export const handleOidcCallback = async (
     log("error", "OIDC CALLBACK ERROR", queryString.error);
     throw new UnauthorizedError();
   }
+
   if (queryString.code === undefined || queryString.code === null) {
     log("warning", "OIDC CALLBACK CONTAINED NO CODE", queryString.error);
     throw new UnauthorizedError();
   }
+
   if (
     !("cookie" in headers) ||
     !(
-      process.env.NONCE_COOKIE_NAME ??
-      "NONCE" in Cookie.parse(headers.cookie[0].value)
+      (process.env.NONCE_COOKIE_NAME ?? "NONCE") in
+      Cookie.parse(headers.cookie[0].value)
     )
   ) {
     log("error", "Initial request does not contain nonce");

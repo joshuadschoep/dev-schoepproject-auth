@@ -1,0 +1,1 @@
+aws lambda update-function-code --function-name=$AWS_FUNCTION_ARN --zip-file=$BUILD_ZIP_FILE
