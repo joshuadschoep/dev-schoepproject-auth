@@ -8,6 +8,7 @@
     "types:check": "tsc",
     "types:watch": "tsc --watch",
     "types": "npm run types:check",
+    "prettify:check": "prettier \"./src/**/*.{js,jsx,mjs,ts,tsx,css,scss,sass}\" --check",
     "lint:check": "eslint ./src/**/*.ts ./test/**/*.ts --max-warnings=0",
     "lint:fix": "eslint ./src/**/*.ts ./test/**/*.ts --fix --max-warnings=0",
     "lint": "npm run lint:check",
