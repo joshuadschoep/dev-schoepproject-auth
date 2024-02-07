@@ -1,5 +1,5 @@
 export class OidcCallbackException extends Error {
-    constructor() {
-        super("A callback from the auth provider was unhandled.");
-    }
+  constructor() {
+    super("A callback from the auth provider was unhandled.");
+  }
 }
