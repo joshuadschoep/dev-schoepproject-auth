@@ -5,7 +5,7 @@ aws cloudfront get-distribution-config --id $AWS_CLOUDFRONT_DIST > response.json
 
 etag=`jq ".ETag" response.json`
 
-echo "Etag value ${etag}"
+echo "Etag value $etag"
 
 jq ".DistributionConfig" response.json > oldconfig.json
 
@@ -26,4 +26,4 @@ jq ".DefaultCacheBehavior.LambdaFunctionAssociations = {
 echo "New Configuration"
 cat newconfig.json
 
-aws cloudfront update-distribution --id $AWS_CLOUDFRONT_DIST --if-match $etag --distribution-config file://newconfig.json
+aws cloudfront update-distribution --id $AWS_CLOUDFRONT_DIST --distribution-config file://newconfig.json --if-match $etag
