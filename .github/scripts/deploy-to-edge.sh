@@ -7,7 +7,7 @@ jq ".DistributionConfig.DefaultCacheBehavior.LambdaFunctionAssociations = {
         Quantity: 1,
         Items: [
             {
-                LambdaFunctionARN: \"$versionarn\",
+                LambdaFunctionARN: $versionarn,
                 EventType: \"viewer-request\",
                 IncludeBody: false
             }
