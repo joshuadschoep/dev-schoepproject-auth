@@ -4,6 +4,9 @@ echo "Created new version $versionarn"
 aws cloudfront get-distribution-config --id $AWS_CLOUDFRONT_DIST > response.json
 
 etag=`jq ".ETag" response.json`
+
+echo "Etag value ${etag}"
+
 jq ".DistributionConfig" response.json > oldconfig.json
 
 echo "Old configuration"
