@@ -3,7 +3,7 @@ echo "Created new version $versionarn"
 
 aws cloudfront get-distribution --id=$AWS_CLOUDFRONT_DIST > oldconfig.json
 
-jq ".DistributionConfig.DefaultCacheBehavior.LambdaFunctionAssociations = {
+jq ".Distribution.DistributionConfig.DefaultCacheBehavior.LambdaFunctionAssociations = {
         Quantity: 1,
         Items: [
             {
