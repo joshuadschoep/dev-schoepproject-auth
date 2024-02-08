@@ -16,4 +16,4 @@ jq ".DistributionConfig.DefaultCacheBehavior.LambdaFunctionAssociations = {
 
 cat newconfig.json;
 
-aws cloudfront update-distribution --id=$AWS_CLOUDFRONT_DIST --distribution-config=newconfig.json
+aws cloudfront update-distribution --id=$AWS_CLOUDFRONT_DIST --distribution-config file://newconfig.json
