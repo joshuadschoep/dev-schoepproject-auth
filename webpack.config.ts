@@ -40,6 +40,7 @@ const config: Configuration = {
       "AUTH0_OIDC_CONFIG_URL",
       "OIDC_CLIENT_ID",
       "OIDC_CLIENT_SECRET",
+      "OIDC_AUDIENCE",
       "OIDC_REDIRECT_URI",
       "OIDC_CALLBACK_PATH",
       "OIDC_GRANT_TYPE",
