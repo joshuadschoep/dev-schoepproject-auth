@@ -3,7 +3,7 @@ echo "Created new version $versionarn"
 
 aws cloudfront get-distribution-config --id $AWS_CLOUDFRONT_DIST > response.json
 
-etag=`jq ".ETag" response.json`
+etag=`jq -r ".ETag" response.json`
 
 echo "Etag value $etag"
 
