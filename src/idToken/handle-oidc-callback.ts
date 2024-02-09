@@ -68,7 +68,6 @@ const getTokens = async (code: string | string[] | undefined) => {
     client_secret: process.env.OIDC_CLIENT_SECRET,
     redirect_uri: process.env.OIDC_REDIRECT_URI,
     grant_type: process.env.OIDC_GRANT_TYPE,
-    audience: process.env.OIDC_AUDIENCE,
     scope: process.env.OIDC_SCOPES,
   });
   log("info", "Exchanging code for access token");

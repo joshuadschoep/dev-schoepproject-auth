@@ -53,6 +53,7 @@ export const OIDC_REDIRECT = (requestUri: string) => {
     response_type: process.env.OIDC_RESPONSE_TYPE,
     scope: process.env.OIDC_SCOPES,
     redirect_uri: process.env.OIDC_REDIRECT_URI,
+    audience: process.env.OIDC_AUDIENCE,
     state: requestUri,
     nonce,
   };
