@@ -49,7 +49,9 @@ export const handleOidcCallback = async (
   );
 
   log("info", "Performing XSRF check");
-  const originalNonce = Cookie.parse(headers.cookie[0].value);
+  const originalNonce = Cookie.parse(headers.cookie[0].value)[
+    process.env.NONCE_COOKIE_NAME ?? "NONCE"
+  ];
   if (!(await xsrfCheck(idToken, decodedToken, originalNonce))) {
     throw new UnauthorizedError();
   }
