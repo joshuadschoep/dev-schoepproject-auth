@@ -41,6 +41,7 @@ const config: Configuration = {
       "OIDC_CLIENT_ID",
       "OIDC_CLIENT_SECRET",
       "OIDC_REDIRECT_URI",
+      "OIDC_CALLBACK_PATH",
       "OIDC_GRANT_TYPE",
       "OIDC_RESPONSE_TYPE",
       "OIDC_SCOPES",
