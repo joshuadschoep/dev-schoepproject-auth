@@ -20,16 +20,19 @@ export const handleOidcCallback = async (
   const headers = request.headers;
   const queryString = parse(request.querystring);
 
+  log("info", "Checking querystring", queryString);
   if (queryString.error !== undefined && queryString.error?.length !== 0) {
     log("error", "OIDC CALLBACK ERROR", queryString.error);
     throw new UnauthorizedError();
   }
 
+  log("info", "Checking for code", queryString.code);
   if (queryString.code === undefined || queryString.code === null) {
     log("warning", "OIDC CALLBACK CONTAINED NO CODE", queryString.error);
     throw new UnauthorizedError();
   }
 
+  log("info", "Checking for nonce", headers.cookie[0].value);
   if (
     !("cookie" in headers) ||
     !(
@@ -45,11 +48,13 @@ export const handleOidcCallback = async (
     queryString.code
   );
 
+  log("info", "Performing XSRF check");
   const originalNonce = Cookie.parse(headers.cookie[0].value);
   if (!(await xsrfCheck(idToken, decodedToken, originalNonce))) {
     throw new UnauthorizedError();
   }
 
+  log("info", "Exchanging access token for signed cookie from auth API");
   const devAccessCookie = await getCookie(accessToken);
   return SUCCESS_REDIRECT(queryString, devAccessCookie);
 };
@@ -64,10 +69,12 @@ const getTokens = async (code: string | string[] | undefined) => {
     audience: process.env.OIDC_AUDIENCE,
     scope: process.env.OIDC_SCOPES,
   });
+  log("info", "Exchanging code for access token");
   const response = await axios.post(
     discoveryDocument.token_endpoint,
     tokenRequestString
   );
+  log("info", "Got tokens", response.data);
   const decodedToken = decode(response.data.id_token, {
     complete: true,
   });
@@ -90,8 +97,10 @@ const xsrfCheck = async (
     return false;
   }
   const pem = JwkToPem(rawPem);
+  log("info", "Verifying nonce against cookie's nonce");
   const decoded = await verifyJwt(idToken, pem, { algorithms: ["RS256"] });
   if (!validateNonce(decoded.nonce, nonce)) {
+    log("warning", "Nonces did not match", decoded, nonce);
     return false;
   }
   return true;

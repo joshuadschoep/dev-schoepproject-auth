@@ -70,7 +70,7 @@ describe("Developer Authentication Method", () => {
   });
 
   describe("OIDC Callbacks", () => {
-    it("should return an error if a user manually hits _callback", async () => {
+    it("should return an error if a user manually hits /_callback", async () => {
       const callback = jest.fn();
       await handle(
         {
@@ -90,7 +90,7 @@ describe("Developer Authentication Method", () => {
       const callback = jest.fn();
       await handle(
         {
-          route: process.env.OIDC_CALLBACK_PATH,
+          route: `/${process.env.OIDC_CALLBACK_PATH}`,
           querystring: "error=InvalidOIDCRequest",
         },
         callback
