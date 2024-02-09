@@ -74,7 +74,7 @@ describe("Developer Authentication Method", () => {
       const callback = jest.fn();
       await handle(
         {
-          route: process.env.OIDC_CALLBACK_PATH,
+          route: `/${process.env.OIDC_CALLBACK_PATH}`,
         },
         callback
       );
