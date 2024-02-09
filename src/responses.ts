@@ -54,7 +54,7 @@ export const OIDC_REDIRECT = (requestUri: string) => {
     scope: process.env.OIDC_SCOPES,
     redirect_uri: process.env.OIDC_REDIRECT_URI,
     state: requestUri,
-    nonce: nonce,
+    nonce,
   };
 
   return {

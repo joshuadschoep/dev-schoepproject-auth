@@ -1,5 +1,5 @@
-import { default as DiscoveryDocument } from "./discovery.json";
-import { default as JwksDocument } from "./jwks.json";
+import DiscoveryDocument from "./discovery.json";
+import JwksDocument from "./jwks.json";
 
 jest.mock("axios", () => ({
   get: jest.fn().mockImplementation(async (uri: string) => {

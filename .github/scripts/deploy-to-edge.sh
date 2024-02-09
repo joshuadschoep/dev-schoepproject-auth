@@ -3,6 +3,8 @@ echo "Created new version $versionarn"
 
 aws cloudfront get-distribution-config --id $AWS_CLOUDFRONT_DIST > response.json
 
+etag=`jq -r ".ETag" response.json`
+
 jq ".DistributionConfig" response.json > oldconfig.json
 
 jq ".DefaultCacheBehavior.LambdaFunctionAssociations = {
@@ -15,5 +17,6 @@ jq ".DefaultCacheBehavior.LambdaFunctionAssociations = {
             }
         ]
     }" oldconfig.json > newconfig.json
+
 
 aws cloudfront update-distribution --id $AWS_CLOUDFRONT_DIST --distribution-config file://newconfig.json --if-match $etag

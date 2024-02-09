@@ -1,6 +1,6 @@
 import "dotenv/config";
 import "./mock";
-import { default as DiscoveryDocument } from "./discovery.json";
+import DiscoveryDocument from "./discovery.json";
 import { handle } from "./helper";
 
 describe("Developer Authentication Method", () => {

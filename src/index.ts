@@ -1,6 +1,4 @@
-if (process.env.NODE_ENV !== "PRODUCTION") {
-  require("dotenv").config();
-}
+import "dotenv/config";
 import type { CloudFrontRequestEvent, Handler } from "aws-lambda";
 import {
   INTERNAL_SERVER_ERROR_RESPONSE,

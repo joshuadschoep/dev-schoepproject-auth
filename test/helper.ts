@@ -1,4 +1,4 @@
-import { Callback, Context } from "aws-lambda";
+import type { Callback, Context } from "aws-lambda";
 import { handler } from "src/index";
 
 export interface HandleConfig {
@@ -9,7 +9,7 @@ export interface HandleConfig {
 }
 
 export const handle = async (config: HandleConfig, callback: Callback<any>) => {
-  return handler(
+  return await handler(
     {
       Records: [
         {
@@ -33,6 +33,7 @@ export const handle = async (config: HandleConfig, callback: Callback<any>) => {
         },
       ],
     },
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     {
       awsRequestId: "testRequest",
       functionName: "testFunction",
