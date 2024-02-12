@@ -21,10 +21,10 @@ export const getCookie = async (accessToken: string): Promise<string> => {
       }),
     })
   );
-  console.log("asdf", res);
-  console.log("2", res.Payload);
-  console.log("3", res.Payload?.transformToString());
-  const result: AuthorizationResult = JSON.parse(res.Payload?.toString() ?? "");
+
+  const result: AuthorizationResult = JSON.parse(
+    res.Payload?.transformToString() ?? ""
+  );
 
   if (result.Authorized === undefined || result.SignedCookie === undefined) {
     log("warning", "Error authorizing dev token:", result.Error?.Message);
