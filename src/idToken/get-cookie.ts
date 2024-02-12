@@ -23,7 +23,7 @@ export const getCookie = async (accessToken: string): Promise<string> => {
   );
   console.log("asdf", res);
   console.log("2", res.Payload);
-  console.log("3", res.Payload?.toString());
+  console.log("3", res.Payload?.transformToString());
   const result: AuthorizationResult = JSON.parse(res.Payload?.toString() ?? "");
 
   if (result.Authorized === undefined || result.SignedCookie === undefined) {
