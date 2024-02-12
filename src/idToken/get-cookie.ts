@@ -13,18 +13,18 @@ export interface AuthorizationResult {
 }
 
 export const getCookie = async (accessToken: string): Promise<string> => {
-  const result: AuthorizationResult = JSON.parse(
-    (
-      await lambdaClient.send(
-        new InvokeCommand({
-          FunctionName: process.env.AWS_AUTHORIZE_METHOD_NAME,
-          Payload: JSON.stringify({
-            OAuthAccessToken: accessToken,
-          }),
-        })
-      )
-    ).Payload?.toString() ?? ""
+  const res = await lambdaClient.send(
+    new InvokeCommand({
+      FunctionName: process.env.AWS_AUTHORIZE_METHOD_NAME,
+      Payload: JSON.stringify({
+        OAuthAccessToken: accessToken,
+      }),
+    })
   );
+  console.log("asdf", res);
+  console.log("2", res.Payload);
+  console.log("3", res.Payload?.toString());
+  const result: AuthorizationResult = JSON.parse(res.Payload?.toString() ?? "");
 
   if (result.Authorized === undefined || result.SignedCookie === undefined) {
     log("warning", "Error authorizing dev token:", result.Error?.Message);
