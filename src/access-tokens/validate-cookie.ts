@@ -23,7 +23,7 @@ export const validateCookie = async (signedCookie: string) => {
           }),
         })
       )
-    ).Payload?.toString() ?? ""
+    ).Payload?.transformToString() ?? ""
   );
 
   if (result.Authorized === true) {
