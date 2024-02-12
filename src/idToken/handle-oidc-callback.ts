@@ -64,6 +64,7 @@ export const handleOidcCallback = async (
 const getTokens = async (code: string | string[] | undefined) => {
   const tokenRequestString = stringify({
     code,
+    audience: process.env.OIDC_AUDIENCE,
     client_id: process.env.OIDC_CLIENT_ID,
     client_secret: process.env.OIDC_CLIENT_SECRET,
     redirect_uri: process.env.OIDC_REDIRECT_URI,
