@@ -1,0 +1,9 @@
+name: "Feature Branch Test & Build"
+on:
+  pull_request:
+    branches: main
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+    secrets: inherit
