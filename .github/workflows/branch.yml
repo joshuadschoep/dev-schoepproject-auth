@@ -1,4 +1,4 @@
-name: "Main Branch Test & Deploy"
+name: "Feature Branch Test & Build"
 on:
   pull_request:
     branches: main
@@ -8,3 +8,4 @@ on:
 jobs:
   ci:
     uses: ./.github/workflows/ci.yml
+    secrets: inherit
