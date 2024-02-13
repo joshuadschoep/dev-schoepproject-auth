@@ -19,4 +19,4 @@ jq ".DefaultCacheBehavior.LambdaFunctionAssociations = {
     }" oldconfig.json > newconfig.json
 
 
-aws cloudfront update-distribution --id $AWS_CLOUDFRONT_DIST --distribution-config file://newconfig.json --if-match $etag
+aws cloudfront update-distribution --id $AWS_CLOUDFRONT_DIST --distribution-config file://newconfig.json --if-match $etag > /dev/null
