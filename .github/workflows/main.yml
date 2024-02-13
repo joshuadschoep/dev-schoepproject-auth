@@ -11,3 +11,6 @@ jobs:
     needs: ci
     uses: ./.github/workflows/cd.yml
     secrets: inherit
+    permissions:
+      id-token: write
+      contents: read
